@@ -17,12 +17,12 @@ const Header: React.FC<HeaderProps> = ({ onGoHome, session, onLoginClick }) => {
 
   const menuItems = [
     {
-      label: 'Support',
+      label: 'Coffee !',
       icon: <HeartIcon className="w-5 h-5 sm:mr-2" />,
       href: 'https://buymeacoffee.com/acrofchanu',
     },
     {
-      label: "Let's Connect",
+      label: "Follow-Up",
       icon: <LinkIcon className="w-5 h-5 sm:mr-2" />,
       href: 'https://forms.gle/R2Ucsx25o3kJy3MG9',
     },
