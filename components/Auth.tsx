@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { GoogleIcon } from './icons/GoogleIcon';
 import { XCircleIcon } from './icons/XCircleIcon';
@@ -11,10 +11,43 @@ const Auth: React.FC<AuthProps> = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Check for password reset session on component mount
+  useEffect(() => {
+    const checkResetSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // Check URL for reset password parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const accessToken = urlParams.get('access_token');
+      const refreshToken = urlParams.get('refresh_token');
+      const type = urlParams.get('type');
+      
+      if (type === 'recovery' && accessToken && refreshToken) {
+        // Set the session with the tokens from URL
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        
+        if (!error) {
+          setShowResetPassword(true);
+          // Clean the URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } else {
+          setError('Password reset link is invalid or has expired. Please request a new one.');
+        }
+      }
+    };
+    
+    checkResetSession();
+  }, []);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -35,6 +68,43 @@ const Auth: React.FC<AuthProps> = ({ onClose }) => {
         onClose();
       }
     }
+    setLoading(false);
+  };
+  
+  const handleResetPassword = async (event: React.FormEvent) => {
+    event.preventDefault();
+    
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setMessage(null);
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: password
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setMessage('Password updated successfully!');
+        setTimeout(() => {
+          onClose();
+        }, 2000);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    }
+    
     setLoading(false);
   };
   
@@ -90,13 +160,51 @@ const Auth: React.FC<AuthProps> = ({ onClose }) => {
         </button>
         
         <h2 className="text-2xl font-bold text-center text-text-main">
-          {showForgotPassword ? 'Reset Password' : (isSignUp ? 'Create an Account' : 'YO! Creator')}
+          {showResetPassword ? 'Set New Password' : (showForgotPassword ? 'Reset Password' : (isSignUp ? 'Create an Account' : 'YO! Creator'))}
         </h2>
         
         {error && <p className="text-center text-sm text-red-500">{error}</p>}
         {message && <p className="text-center text-sm text-green-600">{message}</p>}
         
-        {showForgotPassword ? (
+        {showResetPassword ? (
+          <form onSubmit={handleResetPassword} className="space-y-4">
+            <div>
+              <label htmlFor="new-password-input" className="block text-sm font-medium text-text-muted mb-1">New Password</label>
+              <input
+                id="new-password-input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full bg-bg-primary/50 border border-border-primary rounded-md p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition"
+                placeholder="••••••••"
+                disabled={loading}
+              />
+            </div>
+            <div>
+              <label htmlFor="confirm-password-input" className="block text-sm font-medium text-text-muted mb-1">Confirm New Password</label>
+              <input
+                id="confirm-password-input"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full bg-bg-primary/50 border border-border-primary rounded-md p-3 focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition"
+                placeholder="••••••••"
+                disabled={loading}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-6 py-3 rounded-md font-semibold text-brand-text bg-brand-primary hover:bg-brand-hover transition-colors disabled:bg-border-primary disabled:cursor-not-allowed"
+            >
+              {loading ? 'Updating...' : 'Update Password'}
+            </button>
+          </form>
+        ) : showForgotPassword ? (
           <form onSubmit={handleForgotPassword} className="space-y-4">
             <div>
               <label htmlFor="email-input" className="block text-sm font-medium text-text-muted mb-1">Email address</label>
