@@ -40,19 +40,33 @@ const Auth: React.FC<AuthProps> = ({ onClose }) => {
   
   const handleForgotPassword = async (event: React.FormEvent) => {
     event.preventDefault();
+    
+    if (!email.trim()) {
+      setError('Please enter your email address');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setMessage(null);
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}`,
+      });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage('Check your email for the password reset link!');
+      if (error) {
+        console.error('Password reset error:', error);
+        setError(error.message);
+      } else {
+        setMessage('Check your email for the password reset link!');
+        setEmail(''); // Clear email field on success
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setError('An unexpected error occurred. Please try again.');
     }
+    
     setLoading(false);
   };
   
