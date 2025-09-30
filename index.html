@@ -23,7 +23,34 @@
     <!-- Fonts & Tailwind -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Lexend', 'sans-serif'],
+              'display': ['Lexend', 'sans-serif'],
+              'hero': ['Lexend', 'sans-serif'],
+            },
+            colors: {
+              'bg-primary': '#F0F8FF',
+              'bg-card': '#FFFFFF',
+              'border-primary': '#E0E7FF',
+              'text-main': '#1E3A8A',
+              'text-muted': '#6366F1',
+              'brand-primary': '#FF6B35',
+              'brand-secondary': '#F59E0B',
+              'brand-hover': '#EF4444',
+              'brand-text': '#FFFFFF',
+            }
+          }
+        }
+      }
+    </script>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -65,43 +92,15 @@
     }
     </script>
 
-  
-
-    <!-- Your existing Tailwind config + scripts remain unchanged -->
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Lexend', 'sans-serif'],
-              'display': ['Lexend', 'sans-serif'],
-              'hero': ['Lexend', 'sans-serif'],
-            },
-            colors: {
-              'bg-primary': '#F0F8FF',
-              'bg-card': '#FFFFFF',
-              'border-primary': '#E0E7FF',
-              'text-main': '#1E3A8A',
-              'text-muted': '#6366F1',
-              'brand-primary': '#FF6B35',
-              'brand-secondary': '#F59E0B',
-              'brand-hover': '#EF4444',
-              'brand-text': '#FFFFFF',
-            }
-          }
-        }
-      }
-    </script>
+    <!-- Noscript fallback -->
+    <noscript>
+      <p style="padding: 20px; text-align: center;">Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required. Please enable JavaScript to use this application.</p>
+    </noscript>
   </head>
 
   <body class="bg-bg-primary text-text-main antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
-
-      <!-- Noscript fallback (SEO text, invisible to UI) -->
-    <noscript>
-      <p>Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required.</p>
-    </noscript>
 
     <!-- Service Worker -->
     <script>
