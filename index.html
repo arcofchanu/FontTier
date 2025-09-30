@@ -65,10 +65,7 @@
     }
     </script>
 
-    <!-- Noscript fallback (SEO text, invisible to UI) -->
-    <noscript>
-      <p>Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required.</p>
-    </noscript>
+  
 
     <!-- Your existing Tailwind config + scripts remain unchanged -->
     <script>
@@ -100,6 +97,11 @@
   <body class="bg-bg-primary text-text-main antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
+
+      <!-- Noscript fallback (SEO text, invisible to UI) -->
+    <noscript>
+      <p>Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required.</p>
+    </noscript>
 
     <!-- Service Worker -->
     <script>
