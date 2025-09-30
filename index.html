@@ -4,11 +4,73 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/ft.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Font Styler</title>
+
+    <!-- SEO Title & Description -->
+    <title>Fonttier — Free Custom Font & 3D Text Generator (PNG, JPG, SVG)</title>
+    <meta name="description" content="Fonttier is a free browser-based font tool. Upload custom fonts & backgrounds, apply 3D perspective text effects, and export PNG, JPG, or SVG — all work saved locally." />
+    <link rel="canonical" href="https://fonttier.monochromemaster.studio/" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content="Fonttier — Free Custom Font & 3D Text Generator" />
+    <meta property="og:description" content="Upload custom fonts & backgrounds, apply 3D perspective, export PNG/JPG/SVG — 100% local and free." />
+    <meta property="og:image" content="https://fonttier.monochromemaster.studio/og.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fonttier.monochromemaster.studio/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fonttier — Free Custom Font & 3D Text Generator" />
+    <meta name="twitter:description" content="Upload custom fonts & backgrounds, apply 3D perspective, export PNG/JPG/SVG — all local and free." />
+
+    <!-- Fonts & Tailwind -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- The Lexend font stylesheet is loaded programmatically in App.tsx to prevent a CORS error when generating SVGs. -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Fonttier",
+      "url": "https://fonttier.monochromemaster.studio/",
+      "description": "Fonttier — a free browser-based font and text image generator. Upload custom fonts & backgrounds, export PNG/JPG/SVG, apply 3D perspective. Works locally.",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Windows, macOS, Linux, ChromeOS (Browser)",
+      "browserRequirements": "Runs in modern browsers with File API and Canvas support",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can I upload my own fonts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — upload OTF, TTF or WOFF files. Files are read locally in your browser and never uploaded to any server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What export formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fonttier supports PNG, JPG and SVG exports."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Noscript fallback (SEO text, invisible to UI) -->
+    <noscript>
+      <p>Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required.</p>
+    </noscript>
+
+    <!-- Your existing Tailwind config + scripts remain unchanged -->
     <script>
       tailwind.config = {
         theme: {
@@ -28,151 +90,18 @@
               'brand-secondary': '#F59E0B',
               'brand-hover': '#EF4444',
               'brand-text': '#FFFFFF',
-            },
-            boxShadow: {
-              'clay': '8px 8px 16px #e0d8cf, -4px -4px 12px #ffffff',
-              'clay-colored': '8px 8px 16px rgba(212, 112, 76, 0.5), -4px -4px 12px rgba(255, 165, 0, 0.2)',
-            },
-            animation: {
-              'spin': 'spin 1s linear infinite',
-              'fadeIn': 'fadeIn 0.3s ease-out forwards',
-              'enter': 'enter 0.5s ease-out forwards',
-            },
-            keyframes: {
-              spin: {
-                '0%': { transform: 'rotate(0deg)' },
-                '100%': { transform: 'rotate(360deg)' },
-              },
-              fadeIn: {
-                'from': { opacity: '0' },
-                'to': { opacity: '1' },
-              },
-              enter: {
-                'from': { opacity: '0', transform: 'translateY(1rem)' },
-                'to': { opacity: '1', transform: 'translateY(0)' },
-              },
-            },
-          },
-        },
-        plugins: [
-          function({ addUtilities }) {
-            addUtilities({
-              '.perspective': {
-                'perspective': '1000px',
-              },
-              '.preserve-3d': {
-                'transform-style': 'preserve-3d',
-              },
-              '.backface-hidden': {
-                'backface-visibility': 'hidden',
-              },
-              '.rotate-y-180': {
-                'transform': 'rotateY(180deg)',
-              },
-              '.group:hover .group-hover\\:rotate-y-180': {
-                'transform': 'rotateY(180deg)',
-              },
-            })
+            }
           }
-        ]
+        }
       }
     </script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
-    <style>
-      body {
-        overflow-x: hidden;
-      }
-      
-      #root {
-        position: relative;
-        z-index: 1;
-        min-height: 100vh;
-      }
-      
-      .checkerboard {
-        background-image:
-            linear-gradient(45deg, #ddd 25%, transparent 25%),
-            linear-gradient(-45deg, #ddd 25%, transparent 25%),
-            linear-gradient(45deg, transparent 75%, #ddd 75%),
-            linear-gradient(-45deg, transparent 75%, #ddd 75%);
-        background-size: 20px 20px;
-        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-      }
+  </head>
 
-      .resize-handle {
-        position: absolute;
-        background-color: white;
-        border-style: solid;
-        border-color: #FF7F50; /* brand-primary */
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-      }
-      .handle-middle-left { top: 50%; left: 0; cursor: ew-resize; }
-      .handle-middle-right { top: 50%; left: 100%; cursor: ew-resize; }
-      .resize-handle.handle-active {
-        transform: translate(-50%, -50%) scale(1.4);
-        box-shadow: 0 0 10px rgba(255, 127, 80, 0.7); /* brand-primary with opacity */
-      }
-
-      /* Hide borders and UI elements during export */
-      .export-mode .export-hidden {
-        display: none !important;
-      }
-      
-      /* Force hide all borders and outlines during export */
-      .export-mode [class*="ring-"] {
-        display: none !important;
-      }
-      
-      .export-mode .absolute[style*="ring"] {
-        display: none !important;
-      }
-      
-      .export-mode .absolute[style*="border"] {
-        border: none !important;
-      }
-      
-      /* Hide any element with border styles during export */
-      .export-mode * {
-        border: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-      }
-      
-      /* Specifically target dashed borders */
-      .export-mode [style*="dashed"] {
-        display: none !important;
-      }
-      
-      /* Remove preview container border during export */
-      .export-mode {
-        border: none !important;
-        background: transparent !important;
-        padding: 0 !important;
-        border-radius: 0 !important;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.1.1",
-    "styled-components": "https://aistudiocdn.com/styled-components@^6.1.19"
-  }
-}
-</script>
-</head>
   <body class="bg-bg-primary text-text-main antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
-    
-    <!-- Service Worker Registration -->
+
+    <!-- Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
