@@ -91,14 +91,16 @@
       ]
     }
     </script>
-
-    <!-- Noscript fallback -->
-    <noscript>
-      <p style="padding: 20px; text-align: center;">Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required. Please enable JavaScript to use this application.</p>
-    </noscript>
   </head>
 
   <body class="bg-bg-primary text-text-main antialiased">
+    <!-- Noscript fallback (SEO text, invisible to UI) -->
+    <noscript>
+      <div style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">
+        <p>Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required.</p>
+      </div>
+    </noscript>
+    
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 
@@ -116,11 +118,5 @@
         });
       }
     </script>
-    
-    <!-- Noscript fallback -->
-    <noscript>
-      <p style="padding: 20px; text-align: center;">Fonttier is a free online font and text generator. Upload your custom fonts, apply 3D text perspective, and export PNG, JPG, or SVG — all work is saved locally in your browser with no uploads required. Please enable JavaScript to use this application.</p>
-    </noscript>
-    
   </body>
 </html>
