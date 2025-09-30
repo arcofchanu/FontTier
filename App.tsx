@@ -424,15 +424,25 @@ function App() {
       {!isOnline ? (
         <OfflinePage onRetry={handleRetryConnection} />
       ) : (
-        <div className={`min-h-screen font-sans ${!isEditorVisible ? 'flex items-start lg:items-center justify-center p-4 sm:p-6 lg:p-8' : 'p-4 sm:p-6 lg:p-8'}`}>
+        <div className={`min-h-screen font-sans ${!isEditorVisible ? '' : 'p-4 sm:p-6 lg:p-8'}`}>
           <LiveBackground />
           {!isEditorVisible ? (
-        <LandingPage 
-          onStartCreating={handleStartCreating} 
-          onLoginClick={() => setIsAuthModalOpen(true)}
-        />
+        <div className="min-h-screen flex flex-col">
+          <div className="flex-1 flex items-start lg:items-center justify-center p-4 sm:p-6 lg:p-8">
+            <LandingPage 
+              onStartCreating={handleStartCreating} 
+              onLoginClick={() => setIsAuthModalOpen(true)}
+            />
+          </div>
+          {/* Footer for landing page */}
+          <footer className="pb-8 text-center">
+            <p className="text-sm text-text-muted">
+              © 2025 Fontier — Minimal & powerful font editing
+            </p>
+          </footer>
+        </div>
       ) : session ? (
-        <>
+        <div className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto w-full">
             <Header 
               onGoHome={() => setIsEditorVisible(false)} 
@@ -464,11 +474,18 @@ function App() {
                     onInteractionStart={() => setIsAdjustingTextBox(true)}
                     onInteractionEnd={() => setIsAdjustingTextBox(false)}
                 />
-                <div className="block lg:hidden mt-8">
+                                <div className="block lg:hidden mt-8">
                     {controlsPanel}
                 </div>
               </div>
             </main>
+            
+            {/* Footer */}
+            <footer className="mt-16 pb-8 text-center">
+              <p className="text-sm text-text-muted">
+                © 2025 Fonttier — Minimal & powerful font editing
+              </p>
+            </footer>
           </div>
           <ExportModal
             isOpen={isExportModalOpen}
@@ -479,13 +496,23 @@ function App() {
           />
           {isLoading && <Loader />}
           {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage('')} />}
-        </>
+        </div>
       ) : (
         // If user tries to access editor without authentication, redirect to landing page
-        <LandingPage 
-          onStartCreating={handleStartCreating} 
-          onLoginClick={() => setIsAuthModalOpen(true)}
-        />
+        <div className="min-h-screen flex flex-col">
+          <div className="flex-1 flex items-start lg:items-center justify-center p-4 sm:p-6 lg:p-8">
+            <LandingPage 
+              onStartCreating={handleStartCreating} 
+              onLoginClick={() => setIsAuthModalOpen(true)}
+            />
+          </div>
+          {/* Footer for landing page */}
+          <footer className="pb-8 text-center">
+            <p className="text-sm text-text-muted">
+              © 2025 Fontier — Minimal & powerful font editing
+            </p>
+          </footer>
+        </div>
       )}
       {isAuthModalOpen && <Auth onClose={() => setIsAuthModalOpen(false)} />}
         </div>
